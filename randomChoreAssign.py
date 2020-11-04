@@ -4,6 +4,9 @@
 
 import ast, os, random, re, smtplib
 
+# Edit these values as needed.
+chores_master = ['bathroom', 'dishes', 'floor', 'kitchen', 'laundry']
+
 family_path = os.path.join(os.getcwd() + '\\family.txt')
 log_path = os.path.join(os.getcwd() + '\\log.txt')
 
@@ -19,10 +22,8 @@ if os.path.exists(family_path):
 
 	pass
 
-# For first-time runs.
+# Else log_file doesn't exist, write family members.
 else:
-
-	# If log_file doesn't exist, write family members.
 	while True:
 	
 		new_family = input('Please input a family member\'s name: ')
@@ -32,19 +33,18 @@ else:
 		
 		prompt = input('Are there any additional family members? ')
 		
+		# Continue to write family members until otherwise specified.
 		if re.search(r'^y', prompt, flags=re.IGNORECASE):
 			pass
-			
+
+		# Write family to txt file for later reference.			
 		else:
 
-			# Write family to txt file for later reference.
 			family_file = open(family_path, 'w')
 			family_file.write(str(family))
 			family_file.close()
 
 			break
-
-chores_master = ['bathroom', 'dishes', 'floor', 'kitchen', 'laundry']
 
 # Log into email server.
 my_email = input('Please enter your email address: ')
@@ -75,7 +75,7 @@ for k, v in family.items():
 		while True:
 			random_chore = random.choice(chores)
 
-			# If the choice is different that than the previous, proceed.
+			# If the choice is different than the previous, proceed.
 			if random_chore != prev_assignments[k]:
 				break
 
@@ -92,10 +92,10 @@ for k, v in family.items():
 		(k, random_chore)
 	
 	print('Sending message to %s...' % v)
-	
+
+	# Check for any errors.	
 	send_status = smtpObj.sendmail(my_email, v, email_message)
 	
-	# Check for any errors.
 	if send_status != {}:
 		print('There was a problem sending to %s: %s.' % (v, send_status))
 	
